@@ -1,0 +1,101 @@
+{
+  "operation": "payment_create",
+  "kind": "payment_create",
+  "title": "Take payment",
+  "description": "Take a payment through Square.",
+  "summary": "take a payment",
+  "icon": "◫",
+  "docs": "https://developer.squareup.com/reference/square/payments-api/create-payment",
+
+  "sideEffects": "unsafe-to-replay",
+  "idempotency": "required",
+  "$idempotencyComment": "Square's window is 24 hours, and the key is a REQUIRED body field rather than a header. `required` makes the generated executor derive it from the RUN and the NODE -- never fresh -- so a resumed durable run returns the original payment instead of taking a second one.",
+
+  "request": {
+    "method": "POST",
+    "path": "/v2/payments",
+    "encoding": "json"
+  },
+
+  "config": [
+    {
+      "type": "expression",
+      "key": "sourceId",
+      "label": "Payment source",
+      "example": "{{ $json.card_nonce }}",
+      "description": "A payment token from the Web Payments SDK, a saved card id, or CASH / EXTERNAL. Square calls it source_id.",
+      "required": true,
+      "send": { "as": "source_id", "value": "string" }
+    },
+    {
+      "type": "expression",
+      "key": "amount",
+      "label": "Amount",
+      "example": "{{ $json.total_cents }}",
+      "description": "In the currency's smallest unit — 1000 is $10.00. Square has no decimal amounts, exactly like Stripe.",
+      "required": true,
+      "send": {
+        "as": "amount_money.amount",
+        "value": "integer",
+        "min": 1,
+        "error": "\"amount\" must be a positive whole number in the currency's smallest unit (1000 = $10.00)"
+      }
+    },
+    {
+      "type": "text",
+      "key": "currency",
+      "label": "Currency",
+      "default": "USD",
+      "placeholder": "USD",
+      "description": "Three-letter ISO code. Square wants it UPPERCASE, where Stripe wants it lowercase — the same field, opposite conventions.",
+      "send": { "as": "amount_money.currency", "value": "string", "transform": "uppercase", "default": "USD" }
+    },
+    {
+      "type": "expression",
+      "key": "locationId",
+      "label": "Location",
+      "example": "{{ $json.location_id }}",
+      "description": "Which of the seller's locations the payment belongs to. Square scopes almost everything by location.",
+      "send": { "as": "location_id", "value": "string", "omitEmpty": true }
+    },
+    {
+      "type": "expression",
+      "key": "customerId",
+      "label": "Customer",
+      "send": { "as": "customer_id", "value": "string", "omitEmpty": true }
+    },
+    {
+      "type": "expression",
+      "key": "referenceId",
+      "label": "Reference",
+      "example": "Order {{ $json.order_id }}",
+      "description": "Your own id for this payment. The usual way to find it again later.",
+      "send": { "as": "reference_id", "value": "string", "omitEmpty": true }
+    },
+    {
+      "type": "textarea",
+      "key": "note",
+      "label": "Note",
+      "rows": 2,
+      "send": { "as": "note", "value": "string", "omitEmpty": true }
+    }
+  ],
+
+  "defaultConfig": { "mode": "auto", "currency": "USD" },
+
+  "outputShape": [
+    { "path": "mode", "type": "string", "description": "Which estate this ran against: fake, sandbox or live." },
+    { "path": "connection", "type": "string", "description": "The connection id that was used." },
+    { "path": "data.payment.id", "type": "string", "description": "Square's payment id. NESTED under `payment` — Square wraps its responses where Stripe returns the object at the top level." },
+    { "path": "data.payment.status", "type": "string", "description": "APPROVED, COMPLETED, CANCELED or FAILED." },
+    { "path": "data.payment.amount_money.amount", "type": "number", "description": "Amount in the currency's smallest unit." },
+    { "path": "data.payment.amount_money.currency", "type": "string", "description": "Three-letter ISO code, uppercase." },
+    { "path": "data.payment.receipt_url", "type": "string", "description": "A hosted receipt Square generates for the buyer." },
+    { "path": "data.errors", "type": "array", "description": "Present when Square accepted the request and refused the payment. Check it before treating a 200 as money taken." }
+  ],
+
+  "contract": {
+    "sends": ["source_id", "idempotency_key", "amount_money", "location_id", "customer_id", "reference_id", "note"],
+    "reads": ["payment", "errors"]
+  }
+}

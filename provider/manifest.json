@@ -1,0 +1,44 @@
+{
+  "$comment": "THE hand-written part. Four packages -- ui, js, php, py -- are generated from this directory and are never edited. Fix this file, then regenerate.",
+
+  "connectorApi": 1,
+
+  "service": "square",
+  "title": "Square",
+  "domain": "payments",
+  "docs": "https://developer.squareup.com/reference/square/payments-api/create-payment",
+
+  "auth": "api_key",
+  "requires": ["accessToken"],
+  "authorize": {
+    "kind": "bearer",
+    "credential": "accessToken"
+  },
+
+  "headers": {
+    "Square-Version": "2026-08-19",
+    "$comment": "Required on EVERY request, and it is a date rather than a number: Square pins behaviour to the version you name, so omitting it is not 'use the latest' -- it is undefined. Read from the spec's securitySchemes.oauth2.x-additional-headers, where Square declares it as an additional header with this default."
+  },
+
+  "sandbox": "base-url",
+  "baseUrls": {
+    "live": "https://connect.squareup.com",
+    "sandbox": "https://connect.squareupsandbox.com"
+  },
+  "sandboxNote": "The one sandbox kind that is genuinely a DIFFERENT PLACE. Stripe's estate is chosen by the key, Telegram's and HubSpot's by the account, SES's not at all -- Square's is another host, with its own data and its own credentials. A sandbox access token sent to the production host is refused rather than silently reaching the real ledger, which makes this the SAFEST of the four kinds and worth saying so: the failure mode is a 401, not a charge.",
+
+  "idempotencyField": "idempotency_key",
+  "idempotencyNote": "Square takes the key in the BODY, not in a header, and lists it as REQUIRED. Every provider before this one that supported idempotency used a header, so the generator had exactly one place to put a key. The distinction is not cosmetic: it is the difference between a retried durable run charging once and charging twice.",
+
+  "encoding": "json",
+
+  "credentialFields": [
+    {
+      "key": "accessToken",
+      "label": "Access token",
+      "scope": "account",
+      "secret": true,
+      "help": "From the Square developer dashboard. SANDBOX and PRODUCTION tokens are different values for different hosts -- a sandbox token is refused by the production host rather than accepted, which is the whole reason this provider's estates cannot be confused."
+    }
+  ]
+}

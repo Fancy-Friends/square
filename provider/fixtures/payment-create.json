@@ -1,0 +1,29 @@
+{
+  "$comment": "Square WRAPS its responses: the object lives under `payment`, where Stripe returns it at the top level. Reproduced rather than flattened, because an author who wires {{ $json.data.payment.id }} against a fake must find the same path when a real payment arrives. Read from Square's own OpenAPI document (CreatePaymentResponse -> payment, errors), not from memory.",
+  "operation": "payment_create",
+
+  "values": {
+    "$comment": "Drawn once. Square echoes the amount and currency inside amount_money and again inside total_money, and two independent draws would produce a payment whose totals disagree with themselves -- a shape Square never sends.",
+    "amount": { "$config": "amount", "as": "integer", "fallback": { "$fake": "int", "min": 500, "max": 25000 } },
+    "currency": { "$config": "currency", "as": "string", "default": "USD" }
+  },
+
+  "response": {
+    "payment": {
+      "id": { "$fake": "hex", "length": 22 },
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z",
+      "amount_money": { "amount": { "$ref": "amount" }, "currency": { "$ref": "currency" } },
+      "total_money": { "amount": { "$ref": "amount" }, "currency": { "$ref": "currency" } },
+      "status": "COMPLETED",
+      "source_type": "CARD",
+      "location_id": { "$config": "locationId", "as": "string", "orNull": true },
+      "customer_id": { "$config": "customerId", "as": "string", "orNull": true },
+      "reference_id": { "$config": "referenceId", "as": "string", "orNull": true },
+      "note": { "$config": "note", "as": "string", "orNull": true },
+      "receipt_url": "https://squareup.com/receipt/preview/fake",
+      "$statusComment": "COMPLETED rather than APPROVED. A faked payment that stopped at APPROVED would make the downstream branch -- act only when the money actually moved -- untestable, which is the branch most worth covering."
+    },
+    "errors": []
+  }
+}
