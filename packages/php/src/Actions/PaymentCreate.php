@@ -40,9 +40,14 @@ final class PaymentCreate
      * later as an "invalid request" from Square.
      *
      * @param array<string,mixed> $config
-     * @return array<string,scalar>
+     * An EMPTY body is `{}`, not `[]` — and PHP cannot tell those apart, because
+     * both are `array()` and `json_encode` picks the list. So an empty one is
+     * returned as an object. TypeScript and Python have no such ambiguity, which
+     * is why this is a difference only the byte-parity suite can see.
+     *
+     * @return array<string,mixed>|\stdClass
      */
-    public static function body(array $config, ?string $idempotencyKey): array
+    public static function body(array $config, ?string $idempotencyKey): array|\stdClass
     {
         if ($idempotencyKey === null || $idempotencyKey === '') {
             throw new ConnectorConfigException(
@@ -95,7 +100,9 @@ final class PaymentCreate
 
         $body['idempotency_key'] = $idempotencyKey;
 
-        return self::nestFields($body);
+        $body = self::nestFields($body);
+        $body = $body === [] ? new \stdClass() : $body;
+        return $body;
     }
 
     /**
