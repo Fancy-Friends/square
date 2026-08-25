@@ -27,6 +27,46 @@ dependencies.
 subject to the kit's full approval bar, and one per provider is hundreds of
 dependencies nobody is tracking.
 
+## Setting it up
+
+Everything below is generated from `provider/manifest.json`, so it cannot disagree with what the packages do.
+
+### Credentials
+
+A Square connection holds 1 value.
+
+Every value here is `account` scope: one per connected account, not one per installation.
+
+| Field | Scope | Secret | Where it comes from |
+|---|---|---|---|
+| **Access token** | per connected account | **secret** | From the Square developer dashboard. SANDBOX and PRODUCTION tokens are different values for different hosts -- a sandbox token is refused by the production host rather than accepted, which is the whole reason this provider's estates cannot be confused. |
+
+### The estate
+
+Square has a separate test host. Selecting sandbox mode changes the base URL.
+
+> The one sandbox kind that is genuinely a DIFFERENT PLACE. Stripe's estate is chosen by the key, Telegram's and HubSpot's by the account, SES's not at all -- Square's is another host, with its own data and its own credentials. A sandbox access token sent to the production host is refused rather than silently reaching the real ledger, which makes this the SAFEST of the four kinds and worth saying so: the failure mode is a 401, not a charge.
+
+## What it can do
+
+### Actions
+
+#### `payment_create` — Take payment
+
+Take a payment through Square.
+
+`POST /v2/payments` · **unsafe to replay** — a retried durable run does it TWICE
+
+| Input | Required | What it is |
+|---|---|---|
+| `sourceId` | yes | A payment token from the Web Payments SDK, a saved card id, or CASH / EXTERNAL. Square calls it source_id. |
+| `amount` | yes | In the currency's smallest unit — 1000 is $10.00. Square has no decimal amounts, exactly like Stripe. |
+| `currency` | no | Three-letter ISO code. Square wants it UPPERCASE, where Stripe wants it lowercase — the same field, opposite conventions. |
+| `locationId` | no | Which of the seller's locations the payment belongs to. Square scopes almost everything by location. |
+| `customerId` | no | Customer |
+| `referenceId` | no | Your own id for this payment. The usual way to find it again later. |
+| `note` | no | Note |
+
 ## Run it before you have credentials
 
 Every operation ships a **faker**, whether or not Square has a sandbox. Set a
