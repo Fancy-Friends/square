@@ -55,7 +55,7 @@
     "packages/ui/package.json": "c46b9472f5a2c487981f3e19551624b1e70d2d8290ab498964d1ddf1f2617e0f",
     "packages/ui/src/index.ts": "28599593c671cd5ca2c481baa6520b849d764c5507287f21b3f67b263ca7ec01",
     "packages/ui/src/kinds/payment-create.ts": "f6ac0bd49f91db2544f248afdacef309bec9c33d90d4a9b803604a86a3a361d8",
-    "packages/ui/src/service.ts": "42fb8c02b3cb7fc2e882e057e232f7570990333fb8739377a651ec6ec05f3814",
+    "packages/ui/src/service.ts": "de9cf73d71f268472f73980c27f41df1ed61921356241d09ff5b2ae0e032fda6",
     "packages/ui/tests/kinds.test.ts": "a071a01407f090e3091120689966d5aa5132638684c2d065d5a4740d652047d4",
     "packages/ui/tsconfig.json": "2cdc4c3b504406aa9553ffad3d936061d66be410030ac3571f0fc81d737d6875",
     "packages/ui/tsup.config.ts": "4067a7f50c1fbbc3c25addab30d28ccada74cc2f80f1b23aecbdc85a3fa50bc0",
