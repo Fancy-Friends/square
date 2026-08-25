@@ -19,7 +19,7 @@
     "packages/js/CHANGELOG.md": "1be5b98b7edca3bb1969175ed43d64d143a84969595468529acbe0b952c91c5a",
     "packages/js/LICENSE": "9c194b64f52c76e677eb84a3e30f369c82727ea58abe50670d5de3f9ccd23270",
     "packages/js/README.md": "0ee9b501628265e8610a2d75d4e2ff0d12f250f070cedefd03903062b29e1a21",
-    "packages/js/package.json": "48438fddc6a11086f124f8307710ac74d4dc26347b21a73771a9a53e93993976",
+    "packages/js/package.json": "e05d2b85e1fb0bb5bb0254c22f19e061bfd1bd5f4601d750c8e2d71f89a75e01",
     "packages/js/src/actions/payment-create.ts": "bce1f915a397f664ff6af9c63d24cbb4d5b1ead6319e7b9ef016c5838d5891ad",
     "packages/js/src/faker.ts": "8c5a5897ef44dd1cc749fcd4afd90b748eda0f9d7869c79406a3fa57de190390",
     "packages/js/src/flow.ts": "bad2598faed5d55a5c1b4d526905c51c84f92a943a2e0dfdd1f8428c267c74a3",
