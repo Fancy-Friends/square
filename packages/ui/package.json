@@ -4,7 +4,8 @@
   "description": "Square's authoring surface for fancy-flow — the node kinds, their config schemas and their declared output shapes. React on every host; carries no executor.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fancy-Friends/square.git"
+    "url": "git+https://github.com/Fancy-Friends/square.git",
+    "directory": "packages/ui"
   },
   "homepage": "https://github.com/Fancy-Friends/square#readme",
   "bugs": "https://github.com/Fancy-Friends/square/issues",
