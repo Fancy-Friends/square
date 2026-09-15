@@ -48,7 +48,7 @@
     "packages/py/pyproject.toml": "8ba1f1b49bd878cbab9a6e65f5e30cf7a56b9ea6e107dd2659bddd16e0376970",
     "packages/py/src/fancy_square/__init__.py": "8e6af06f2db2c1434f91b97842ec670cb4ce43019ae2f9f06b6d6c8dc8d249e3",
     "packages/py/src/fancy_square/_fake.py": "b375bb298ca7d0ea636b634f944ff91e4d2ee524e7191788330af1f0a5fc130f",
-    "packages/py/src/fancy_square/_runtime.py": "429e022391ddfc1260afe11bcfc36d49525bc3473898e0437d0badec41dc8249",
+    "packages/py/src/fancy_square/_runtime.py": "a7e85ded1ad0e46689b45c249283579aad3bdd135f88c4d7989182343a4e3f83",
     "packages/py/src/fancy_square/actions/__init__.py": "1802f43473ef6a439556f2fad1d24c97cc40b0b1b760f06d9a1cab75929041e3",
     "packages/py/src/fancy_square/actions/payment_create.py": "76fe7f6b719d80a2f36082cb2e85355e1f2183e15f500b257691d5faa546b64f",
     "packages/py/src/fancy_square/faker.py": "56f3a0023dfe6fabfe947d601bf9891502305b573340449a32273a560fabdff1",
