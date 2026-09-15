@@ -30,7 +30,11 @@ def _payment_create(config: dict[str, Any], fake: FakeValues) -> Any:
         if (_v := config.get("amount")) is not None and _v != ""
         else fake.int(500, 25000)
     )
-    bound_currency = (str(_v) if (_v := config.get("currency")) is not None and _v != "" else "USD")
+    bound_currency = (
+        str(_v)
+        if (_v := config.get("currency")) is not None and _v != ""
+        else "USD"
+    )
 
     return {
         "payment": {
