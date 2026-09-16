@@ -24,7 +24,7 @@
 import type { ConnectorFaker, FakeRequest } from "@particle-academy/fancy-connector-core";
 
 function fakePaymentCreate({ config, fake }: FakeRequest): unknown {
-  const boundAmount = (config.amount !== undefined && config.amount !== null && config.amount !== "" ? Math.trunc(Number(config.amount)) : fake.int(500, 25000));
+  const boundAmount = (config.amount !== undefined && config.amount !== null && config.amount !== "" ? (Number.isFinite(Number(config.amount)) ? Math.trunc(Number(config.amount)) : null) : fake.int(500, 25000));
   const boundCurrency = (config.currency !== undefined && config.currency !== null && config.currency !== "" ? String(config.currency) : "USD");
 
   return {

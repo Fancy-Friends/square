@@ -50,7 +50,7 @@ final class SquareFaker
     /** @param array<string,mixed> $config */
     private static function PaymentCreate(array $config, mixed $fake): array|\stdClass
     {
-        $boundAmount = ((($v = $config['amount'] ?? null) !== null && $v !== '') ? (int) $v : $fake->int(500, 25000));
+        $boundAmount = ((($v = $config['amount'] ?? null) !== null && $v !== '') ? (is_numeric($v) ? (int) $v : null) : $fake->int(500, 25000));
         $boundCurrency = ((($v = $config['currency'] ?? null) !== null && $v !== '') ? (string) $v : 'USD');
 
         return [
