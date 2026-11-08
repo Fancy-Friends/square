@@ -20,6 +20,6 @@ return [
 
     'credentials' => [
         // Access token (per connected account, secret).
-        'accessToken' => env('SQUARE_ACCESSTOKEN'),
+        'accessToken' => env('SQUARE_ACCESS_TOKEN', env('SQUARE_ACCESSTOKEN')),
     ],
 ];
